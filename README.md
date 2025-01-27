@@ -1,6 +1,6 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+In order to access the database please create your own environment at the root of the directory. 
 
 
 
