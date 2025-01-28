@@ -1,4 +1,4 @@
-const db = require("./db/connection")
+const db = require("../db/connection")
 
 function selectAllTopics(){
     return db
@@ -7,10 +7,10 @@ function selectAllTopics(){
         console.log(result.rows, "result")
         return result.rows
     }).catch((err)=>{
+        console.log(err, "There is a problem with the query")
     })
 
 }
-
 
 
 

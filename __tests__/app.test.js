@@ -5,8 +5,8 @@ const testData = require('../db/data/test-data')
 const seed = require('../db/seeds/seed')
 const db = require("../db/connection")
 
-beforeEach(()=>{
-  return seed(testData)
+beforeEach(async()=>{
+  await seed(testData)
 
 })
 
@@ -22,7 +22,6 @@ describe.only("GET /api", () => {
       .expect(200)
       .then(({ body: { endpoints } }) => {
         expect(endpoints).toEqual(endpointsJson);
-        console.log(endpointsJson)
       });
   });
   test("200: Responds with an array of object with slug and description keys",()=>{
@@ -30,9 +29,16 @@ describe.only("GET /api", () => {
     .get("/api/topics")
     .expect(200)
     .then(({body: {topics}})=>{
-      console.log(topics,"<---- this is topic")
       expect(topics).toBeInstanceOf(Array)
       expect(topics.length).toEqual(3)
     })
   })
 });
+// describe("GET /api/article/:article_id",()=>{
+//   test("should response with 200 and articles with correct properties",()=>{
+//     return request (app)
+//     .get('/api/article/:article_id')
+//     .expect(200)
+//     .then(())
+//   })
+// })
