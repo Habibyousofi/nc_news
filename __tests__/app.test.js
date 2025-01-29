@@ -3,7 +3,10 @@ const request = require ("supertest")
 const app = require ('../app')
 const testData = require('../db/data/test-data')
 const seed = require('../db/seeds/seed')
-const db = require("../db/connection")
+const db = require("../db/connection");
+const articles = require("../db/data/test-data/articles");
+require("jest-sorted")
+
 
 beforeEach(()=>{
  return seed(testData)
@@ -87,5 +90,44 @@ describe("GET /api/articles/:article_id",()=>{
    })
   
   })
+  describe.only("GET /api/articles",()=>{
+    test("200: respond with array of article objects and should have required properties",()=>{
+      return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({body :{ articles }})=>{
+        expect(Array.isArray(articles)).toBe(true);
+        expect(articles.length).toBeGreaterThan(0)
+        articles.forEach((article)=>{
+          expect(article).toHaveProperty("author")
+          expect(article).toHaveProperty("title")
+          expect(article).toHaveProperty("article_id")
+          expect(article).toHaveProperty("topic")
+          expect(article).toHaveProperty("votes")
+          expect(article).toHaveProperty("article_img_url")
+          expect(article).toHaveProperty("created_at")
+          expect(article).toHaveProperty("comment_count")
+          expect(article).not.toHaveProperty("body")
 
+        })
+      })
 
+    })
+    test("200: should respond with sorted array by created_at", ()=>{
+      return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({body : {articles}})=>{
+        console.log(articles)
+        expect(articles).toBeSortedBy("created_at",{descending: true})
+      })
+    })
+    test("404: respond with endpoint not found message if endopoint is not correct ",()=>{
+      return request(app)
+      .get('/api/articlez')
+      .expect(404)
+      .then(({body})=>{
+        expect(body).toEqual({error: "endpoint not found"})
+    })
+  })
+})
