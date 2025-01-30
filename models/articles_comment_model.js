@@ -19,9 +19,6 @@ selectArticleByComment = (article_id) => {
 .then(({rows})=>{ 
     return rows
 })
-.catch((err)=>{
-    next(err)
-})
 }
 
     

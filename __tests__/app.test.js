@@ -151,16 +151,33 @@ describe("GET /api/articles/:article_id/comments",()=>{
         expect(comments).toBeSortedBy("created_at",{descending: true})
        })
     })
+    test("200: should return an empty array when article_id exists but has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments") 
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).toEqual([])
 })
-// test("404: should return an error when article_id does not exist", () => {
-//   return request(app)
-//     .get("/api/articles/2222/comments") 
-//     .expect(404)
-//     .then(({ body }) => {
-//       expect(body.error).toBe("Article not found");
-//          })
-//       })
+    })
+    test("404: should return an error when article_id does not exist", () => {
+      return request(app)
+        .get("/api/articles/2222/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({ error: "Article not found" });
+         })
+      })
+      test("400: should return an error for an invalid article_id", () => {
+        return request(app)
+          .get("/api/articles/twenty-four/comments") 
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).toEqual({ error: "Incorrect Article ID" })
+         })
+      })
+    })
   })
+
 
 
 
