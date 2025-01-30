@@ -7,5 +7,4 @@ app.get('/api',(request , response)=>{
     response.status(200).send({endpoints})
 
 })
-
 module.exports = app
