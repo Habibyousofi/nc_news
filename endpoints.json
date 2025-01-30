@@ -63,6 +63,19 @@
           "comment_count":2
       }
     }
-  }
-}
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "Retrieves all comments for a given article, sorted by most recent.",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "comment_id": 1,
+        "votes": 10,
+        "created_at": "2024-01-01T12:00:00Z",
+        "author": "user123",
+        "body": "This is a comment.",
+        "article_id": 3
+      }]
+      }
+    }
 
