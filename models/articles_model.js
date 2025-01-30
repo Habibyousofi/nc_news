@@ -1,6 +1,7 @@
 const db = require('../db/connection')
 
 const selectAllArticles = ()=>{
+
     return db.query
     (`SELECT articles.article_id, articles.title, articles.author, articles.topic, articles.votes, articles.created_at, articles.article_img_url,
     COUNT (comments.comment_id) AS comment_count 
@@ -10,7 +11,6 @@ const selectAllArticles = ()=>{
     ORDER BY articles.created_at DESC;`)
 
     .then(({rows})=>{
-        console.log(rows,"<<<<<<<<")
         return rows
     })
 
