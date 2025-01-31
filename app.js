@@ -42,6 +42,7 @@ app.use((err, req, res, next) => {
   } else if (err.status) {
     res.status(404).send({error: "Article not found"})
   } else {
+    console.log(err)
     res.status(500).send({error: "Internal Server Error"})
   }
 });
