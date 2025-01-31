@@ -178,6 +178,62 @@ describe("GET /api/articles/:article_id/comments",()=>{
     })
   })
 
+  describe("POST /api/articles/:article_id/comments", () => {
+    test("201: should return the posted comment", () => {
+      const newComment = {
+        username: "icellusedkars",
+        body: "I hate streaming eyes even more"
+      };
+  
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              body: "I hate streaming eyes even more",
+              author: "icellusedkars",
+              article_id: 1,
+              votes: 0,
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+  
+    test("400: should return error when required fields are missing", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.error).toBe("Missing required fields");
+        });
+    });
+  
+    test("404: should return error when article does not exist", () => {
+      return request(app)
+        .post("/api/articles/2222/comments")
+        .send({ username: "butter_bridge", body: "Nice one!" })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.error).toBe("Article not found");
+        });
+    });
+  
+    test("400: should return error for invalid article ID", () => {
+      return request(app)
+        .post("/api/articles/ItsNotId/comments")
+        .send({ username: "butter_bridge", body: "Nice one!" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.error).toBe("Incorrect Article ID");
+        });
+    });
+  })
+
 
 
 
