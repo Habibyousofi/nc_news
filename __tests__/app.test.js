@@ -233,6 +233,30 @@ describe("GET /api/articles/:article_id/comments",()=>{
         });
     });
   })
+  describe.only("PATCH /api/articles/:article_id", () => {
+    test("200: should return updated article with increased vote number", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .timeout(10000)
+        .then(({ body }) => {
+          expect(body.article).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              votes: expect.any(Number),
+            }))
+        })
+      })
+      test("404: if the article is not found should return 404 with error message", ()=> {
+        return request (app)
+        .patch("/api/articles/4444")
+        .expect(404) 
+        .then(({body}) => {
+          expect(body.error).toBe("Article not found")
+        })
+        })
+      });
 
 
 
