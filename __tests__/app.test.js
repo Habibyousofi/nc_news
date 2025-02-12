@@ -233,7 +233,7 @@ describe("GET /api/articles/:article_id/comments",()=>{
         });
     });
   })
-  describe.only("PATCH /api/articles/:article_id", () => {
+  describe("PATCH /api/articles/:article_id", () => {
     test("200: should return updated article with increased vote number", () => {
       return request(app)
         .patch("/api/articles/1")
@@ -257,6 +257,25 @@ describe("GET /api/articles/:article_id/comments",()=>{
         })
         })
       });
+      describe.only('DELETE /api/comments/:comment_id', () => {
+
+  test('204: should delete a comment by id ',() => {
+    const comment_id = 1
+    return request(app)
+    .delete(`/api/comments/${comment_id}`)
+    .expect(204)
+    .then(() => {
+      return request(app)
+        .get(`/api/comments/${comment_id}`)
+        .expect(404);
+    })
+    .then((response) => {
+      expect(response.body.error).toEqual('endpoint not found');
+       
+             })
+         });
+
+        })
 
 
 

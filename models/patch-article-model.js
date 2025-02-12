@@ -15,10 +15,6 @@ patchArticleById = (article_id, inc_votes) =>{
           }
 
         })
-        // .catch((err)=>{
-        //     next(err)
-
-        // })
     }
 
 
