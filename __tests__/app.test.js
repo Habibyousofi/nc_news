@@ -257,7 +257,7 @@ describe("GET /api/articles/:article_id/comments",()=>{
         })
         })
       });
-      describe.only('DELETE /api/comments/:comment_id', () => {
+      describe('DELETE /api/comments/:comment_id', () => {
 
   test('204: should delete a comment by id ',() => {
     const comment_id = 1
@@ -276,6 +276,29 @@ describe("GET /api/articles/:article_id/comments",()=>{
          });
 
         })
+describe.only('GET /api/users', ()=>{
+  test("200: return an array of object with username, name and avatar url objects",()=>{
+   return request(app)
+   .get('/api/users')
+   .expect(200)
+   .then(({body: { users }})=>{
+    expect(users).toBeInstanceOf(Array)
+    users.forEach((user)=> {
+    expect(user).toHaveProperty('username')
+    expect(user).toHaveProperty('name')
+    expect(user).toHaveProperty("avatar_url")
+   })
+  })
+  })
+  test('404: no users found', ()=>{
+    return request(app)
+    .get('/api/user')
+    .expect(404)
+    .then(({body})=>{
+      expect(body).toEqual({error: "endpoint not found"})
+    })
+  })
+})
 
 
 

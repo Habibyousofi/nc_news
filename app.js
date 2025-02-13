@@ -7,6 +7,7 @@ const {getArticlesByComment} = require("./controllers/articles_comment_controlle
 const {postComment} = require("./controllers/comment_post_controller.js")
 const {getUpdatedArticle} = require("./controllers/patch-article-controller.js");
 const { deleteComments } = require("./controllers/delete-comment-controller.js");
+const {getUsers} = require('./controllers/api_users_controller.js')
 const app = express();
 app.use(express.json())
 
@@ -28,13 +29,15 @@ app.patch('/api/articles/:article_id', getUpdatedArticle)
 
 app.delete('/api/comments/:comment_id', deleteComments)
 
+app.get('/api/users', getUsers)
+
 app.all("*",(req , res)=>{
 res.status(404).send({error: "endpoint not found"})
 })
 
+
 app.use((err, req, res, next) =>{
-  console.log(err);
-  
+
 
   if (err.code === "23502") {
     res.status(400).send({error: "Missing required fields"})
